@@ -1,11 +1,16 @@
 package com.example.softassign2api.Database;
-
 import com.example.softassign2api.Models.Customer;
+import org.springframework.stereotype.Component;
+
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+@Component
 public class InMemoryCustomer implements CustomerDatabase{
-    private static final ArrayList<Customer> customers = new ArrayList<>();
+    private static ArrayList<Customer> customers = new ArrayList<>();
+
+
     @Override
     public void add(Customer customer) {
         customers.add(customer);
@@ -15,6 +20,26 @@ public class InMemoryCustomer implements CustomerDatabase{
     public Customer getCustomer(String userName) {
         for (Customer temp: customers) {
             if (temp.getUserName().equals(userName)){
+                return temp;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean IfUserNameExists(String username) {
+        for (Customer temp : customers) {
+            if (temp.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Customer CheckCredentials(String username,String password) {
+        for (Customer temp : customers) {
+            if (Objects.equals(temp.getUserName(), username) && Objects.equals(temp.getPassword(), password)){
                 return temp;
             }
         }
