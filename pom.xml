@@ -14,7 +14,7 @@
     <name>SoftAssign2API</name>
     <description>SoftAssign2API</description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>11</java.version>
     </properties>
     <dependencies>
         <dependency>
