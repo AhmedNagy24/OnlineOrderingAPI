@@ -33,12 +33,23 @@ public class InMemoryCategory implements CategoryDatabase{
     }
 
     @Override
-    public boolean decPartsNum(Product product, int decrement) {
+    public boolean canRemove(Product product, int decrement) {
         for (Category cat:categories) {
             if (cat.containsProduct(product)){
                 int oldValue = cat.getPartsNum(product);
+                return oldValue > 0 && oldValue >= decrement;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean decPartsNum(Product product, int decrement) {
+        for (Category cat:categories) {
+            if (cat.containsProduct(product)){
                 int indexCat = categories.indexOf(cat);
-                if (oldValue > 0 && oldValue >= decrement){
+                int oldValue = cat.getPartsNum(product);
+                if (oldValue >= decrement){
                     categories.get(indexCat).updatePartsNum(product, oldValue-decrement);
                     return true;
                 }else {
@@ -61,6 +72,8 @@ public class InMemoryCategory implements CategoryDatabase{
         }
         return false;
     }
+
+
 
     @Override
     public ArrayList<Object> serializeCategories() {

@@ -8,7 +8,7 @@ public class InMemoryNotification implements NotificationDatabase{
     public static Queue<String> notificationsQueue;
     public InMemoryNotification() {
         notificationsQueue = new java.util.LinkedList<>();
-        notificationsQueue.add("Nagy 3la bta3y");
+        notificationsQueue.add("Welcome to the notification queue!");
     }
     @Override
     public void saveNotification(String recipient, String body) {
