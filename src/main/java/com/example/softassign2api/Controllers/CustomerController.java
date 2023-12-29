@@ -16,7 +16,7 @@ public class CustomerController {
         return customerService.registerUser(user);
     }
     @GetMapping("/login/{username}/{password}")
-    public Customer LoginUser(@PathVariable("username") String username,@PathVariable("password")String password) {
+    public String LoginUser(@PathVariable("username") String username,@PathVariable("password")String password) {
         return customerService.SignInUser(username, password);
     }
 }

@@ -23,9 +23,13 @@ public class CustomerService {
         }
     }
 
-    public Customer SignInUser(String username,String password){
+    public String SignInUser(String username,String password){
 
-        return  customerDatabase.CheckCredentials(username,password);
+          if(customerDatabase.CheckCredentials(username,password)!=null) {
+              customerDatabase.CheckCredentials(username, password).setLogin(true);
+              return "Login Successful";
+          }
+          return "Login Failed";
     }
 
 
