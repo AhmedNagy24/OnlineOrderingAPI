@@ -15,7 +15,7 @@ public class InMemoryNotification implements NotificationDatabase{
         notificationsQueue.add(body);
         //random time to simulate the sending then remove it from the queue
         try {
-            Thread.sleep((long) (Math.random() * 10000));
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
