@@ -10,11 +10,11 @@ import java.util.Objects;
 public class InMemoryCustomer implements CustomerDatabase{
     private static ArrayList<Customer> customers = new ArrayList<>();
     public InMemoryCustomer(){
-        customers.add(new Customer("user1","user1234556",1000,false));
+        customers.add(new Customer("user1","user123456",1000,false));
         customers.add(new Customer("user2","user123456",1000,false));
-        customers.add(new Customer("user3","user1234567",1000,false));
-        customers.add(new Customer("user4","user12345678",1000,false));
-        customers.add(new Customer("user5","user123456789",1000,false));
+        customers.add(new Customer("user3","user123456",1000,false));
+        customers.add(new Customer("user4","user123456",1000,false));
+        customers.add(new Customer("user5","user123456",1000,false));
     }
 
 
@@ -46,7 +46,7 @@ public class InMemoryCustomer implements CustomerDatabase{
     @Override
     public Customer CheckCredentials(String username,String password) {
         for (Customer temp : customers) {
-            if (Objects.equals(temp.getUserName(), username) && Objects.equals(temp.getPassword(), password)){
+            if (temp.getUserName().equals(username) && temp.getPassword().equals(password)){
                 return temp;
             }
         }
