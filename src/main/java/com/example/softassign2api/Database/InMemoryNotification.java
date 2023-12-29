@@ -13,6 +13,13 @@ public class InMemoryNotification implements NotificationDatabase{
     @Override
     public void saveNotification(String recipient, String body) {
         notificationsQueue.add(body);
+        //random time to simulate the sending then remove it from the queue
+        try {
+            Thread.sleep((long) (Math.random() * 10000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        notificationsQueue.remove(body);
     }
 
     @Override
