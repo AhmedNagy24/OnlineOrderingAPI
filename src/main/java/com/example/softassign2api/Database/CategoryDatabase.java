@@ -10,7 +10,7 @@ public interface CategoryDatabase {
     boolean decPartsNum(Product product, int decrement);
 
     boolean incPartsNum(Product product, int increment);
-    ArrayList<Category> getCategories();
+    ArrayList<Object> serializeCategories();
     Product searchProd(String name, String vendor);
 
 }

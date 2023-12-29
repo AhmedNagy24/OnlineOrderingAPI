@@ -2,11 +2,12 @@ package com.example.softassign2api.Database;
 
 import com.example.softassign2api.Models.Category;
 import com.example.softassign2api.Models.Product;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+@Component
 public class InMemoryCategory implements CategoryDatabase{
     private static final ArrayList<Category> categories = new ArrayList<>();
 
@@ -62,8 +63,25 @@ public class InMemoryCategory implements CategoryDatabase{
     }
 
     @Override
-    public ArrayList<Category> getCategories() {
-        return categories;
+    public ArrayList<Object> serializeCategories() {
+        ArrayList<Object> serializedCats = new ArrayList<>();
+        for (Category cat : categories) {
+            Map<String, Object> tempCat = new HashMap<>();
+            tempCat.put("name", cat.getName());
+            tempCat.put("totalParts", cat.calcTotalParts());
+            ArrayList<Object> serializedProds = new ArrayList<>();
+            for (Product product : cat.getProductsSet()) {
+                Map<String, Object> tempProd = new HashMap<>();
+                tempProd.put("name", product.getName());
+                tempProd.put("vendor", product.getVendor());
+                tempProd.put("price", product.getPrice());
+                tempProd.put("partsNum", cat.getPartsNum(product));
+                serializedProds.add(tempProd);
+            }
+            tempCat.put("products", serializedProds);
+            serializedCats.add(tempCat);
+        }
+        return serializedCats;
     }
 
     @Override
