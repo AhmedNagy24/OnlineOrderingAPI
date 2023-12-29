@@ -1,16 +1,15 @@
 package com.example.softassign2api.Models;
 
-import java.util.ArrayList;
+import com.example.softassign2api.Database.CartDatabase;
 
 public class SimpleOrder extends Order {
-    private ArrayList<Product> products;
-    SimpleOrder(){
-        products = new ArrayList<>();
+    private ShoppingCart cart;
+    private CartDatabase cartDatabase;
+    public SimpleOrder(CartDatabase db){
+        cartDatabase = db;
+        cart = cartDatabase.getCart(customer);
     }
-    public void addProduct(Product product){
-        products.add(product);
-    }
-    public void removeProduct(Product product){
-        products.remove(product);
+    public ShoppingCart getCart() {
+        return cart;
     }
 }
