@@ -1,10 +1,21 @@
 package com.example.softassign2api.Models;
 
+import java.util.Random;
+
 public class Product {
     private String serialNum;
     private String name;
     private String vendor;
     private double price;
+
+    public Product(String name, String vendor, int price) {
+        this.name = name;
+        this.vendor = vendor;
+        this.price = price;
+        int random = new Random().nextInt(9999);
+        this.serialNum = name+vendor+random;
+    }
+
 
     public String getSerialNum() {
         return serialNum;

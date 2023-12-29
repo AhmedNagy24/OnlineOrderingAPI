@@ -1,64 +1,67 @@
 package com.example.softassign2api.Models;
 
 import com.example.softassign2api.Database.CategoryDatabase;
-import com.example.softassign2api.Database.InMemoryCategory;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShoppingCart {
     CategoryDatabase database;
-    private int id;
+    private String id;
     private Map<Product, Integer> cart;
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
     private double totalPrice;
-    ShoppingCart(CategoryDatabase db){
+    public ShoppingCart(CategoryDatabase db, String userName){
         cart = new HashMap<>();
         database = db;
         totalPrice = 0.0;
+        id = userName;
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-    public boolean addProduct(String name, String vendor, int amount){
+    public String addProduct(String name, String vendor, int amount){
         Product prodToAdd = database.searchProd(name, vendor);
         if (prodToAdd != null){
             if (database.decPartsNum(prodToAdd, amount)){
-                int oldValue = cart.get(prodToAdd);
-                cart.put(prodToAdd, amount+oldValue);
-                totalPrice = calcTotal();
-                return true;
+                if (cart.containsKey(prodToAdd)){
+                    int oldValue = cart.get(prodToAdd);
+                    cart.put(prodToAdd, amount+oldValue);
+                    totalPrice = calcTotal();
+                    return amount+" of "+name+" from "+vendor+" is added successfully to cart";
+                }else {
+                    cart.put(prodToAdd, amount);
+                    totalPrice = calcTotal();
+                    return amount+" of "+name+" from "+vendor+" is added successfully to cart";
+                }
             }
         }
-        return false;
+        return "Error: Product not found!";
     }
-    public boolean removeProduct(String name, String vendor, int amount){
+    public String removeProduct(String name, String vendor, int amount){
         Product prodToRemove = database.searchProd(name, vendor);
+        String out;
         if (prodToRemove != null && cart.containsKey(prodToRemove)){
             if (cart.get(prodToRemove) > amount){
                 int oldValue = cart.get(prodToRemove);
                 cart.put(prodToRemove, oldValue-amount);
                 database.incPartsNum(prodToRemove, amount);
                 totalPrice = calcTotal();
-                return true;
+                out = amount+" Of "+name+" From "+vendor+" is successfully removed from cart";
+                return out;
             } else if (cart.get(prodToRemove) == amount) {
                 cart.remove(prodToRemove);
                 database.incPartsNum(prodToRemove, amount);
                 totalPrice = calcTotal();
-                return true;
+                out = name+" From "+vendor+" is successfully removed from cart";
+                return out;
             }else {
-                return false;
+                out = "Error: The cart have less than "+amount+" of "+name+" From "+vendor;
+                return out;
             }
         }
-        return false;
+        return "Error: Product not found!";
     }
     private double calcTotal(){
         double total = 0;
@@ -66,5 +69,12 @@ public class ShoppingCart {
             total += (element.getKey().getPrice()*element.getValue());
         }
         return total;
+    }
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public Map<Product, Integer> getCart() {
+        return cart;
     }
 }
