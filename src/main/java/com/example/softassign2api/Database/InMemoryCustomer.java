@@ -36,7 +36,7 @@ public class InMemoryCustomer implements CustomerDatabase{
     @Override
     public boolean IfUserNameExists(String username) {
         for (Customer temp : customers) {
-            if (temp.getUserName().equals(username)) {
+            if (Objects.equals(temp.getUserName(), username)) {
                 return true;
             }
         }
