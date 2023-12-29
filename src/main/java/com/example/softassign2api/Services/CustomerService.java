@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
-    @Autowired
-    @Qualifier("inMemoryCustomer")
-    private CustomerDatabase customerDatabase;
+    private final CustomerDatabase customerDatabase;
+
+    public CustomerService(@Qualifier("inMemoryCustomer") CustomerDatabase customerDatabase) {
+        this.customerDatabase = customerDatabase;
+    }
 
     public String registerUser(Customer user) {
         if (customerDatabase.IfUserNameExists(user.getUserName())){

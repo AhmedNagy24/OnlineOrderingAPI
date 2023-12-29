@@ -1,14 +1,16 @@
 package com.example.softassign2api.Models;
 
-public abstract class NotificationTemplate {
-    public String getRecipient() {
-        return recipient;
-    }
+import lombok.Setter;
 
-    public void setRecipient(String recipient) {
+import java.util.Queue;
+
+
+public abstract class NotificationTemplate {
+    protected String recipient;
+
+    public NotificationTemplate(String recipient) {
         this.recipient = recipient;
     }
 
-    private String recipient;
-
+    public abstract String createBody();
 }
