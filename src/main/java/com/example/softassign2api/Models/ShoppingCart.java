@@ -24,7 +24,7 @@ public class ShoppingCart {
     public String addProduct(String name, String vendor, int amount){
         Product prodToAdd = database.searchProd(name, vendor);
         if (prodToAdd != null){
-            if (database.decPartsNum(prodToAdd, amount)){
+            if (database.canRemove(prodToAdd, amount)){
                 if (cart.containsKey(prodToAdd)){
                     int oldValue = cart.get(prodToAdd);
                     cart.put(prodToAdd, amount+oldValue);
@@ -46,13 +46,11 @@ public class ShoppingCart {
             if (cart.get(prodToRemove) > amount){
                 int oldValue = cart.get(prodToRemove);
                 cart.put(prodToRemove, oldValue-amount);
-                database.incPartsNum(prodToRemove, amount);
                 totalPrice = calcTotal();
                 out = amount+" Of "+name+" From "+vendor+" is successfully removed from cart";
                 return out;
             } else if (cart.get(prodToRemove) == amount) {
                 cart.remove(prodToRemove);
-                database.incPartsNum(prodToRemove, amount);
                 totalPrice = calcTotal();
                 out = name+" From "+vendor+" is successfully removed from cart";
                 return out;

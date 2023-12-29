@@ -5,8 +5,11 @@ import java.util.Map;
 
 public class CompoundOrder extends Order {
     private Map<String, Order> customerMap;
-    CompoundOrder(){
+    public CompoundOrder(){
         customerMap = new HashMap<>();
+    }
+    public void addOrder(Order order){
+        customerMap.put(order.getCustomer(), order);
     }
 
 }
