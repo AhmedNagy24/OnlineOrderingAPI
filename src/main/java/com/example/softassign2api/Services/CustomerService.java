@@ -5,6 +5,7 @@ import com.example.softassign2api.Database.CustomerDatabase;
 import com.example.softassign2api.Database.InMemoryCustomer;
 import com.example.softassign2api.Models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -12,8 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService {
     @Autowired
-    private InMemoryCustomer customerDatabase;
-
+    @Qualifier("inMemoryCustomer")
+    private CustomerDatabase customerDatabase;
 
     public String registerUser(Customer user) {
         if (customerDatabase.IfUserNameExists(user.getUserName())){
