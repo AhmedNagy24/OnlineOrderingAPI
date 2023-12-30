@@ -10,7 +10,7 @@ import java.util.Objects;
 @Component
 public class InMemoryCustomer implements CustomerDatabase{
     private static ArrayList<Customer> customers = new ArrayList<>();
-    public InMemoryCustomer(){
+    static {
         customers.add(new Customer("admin","user123456",1000.0,true, NotificationChannel.EMAIL,"user1@gmail.com","1234567890"));
         customers.add(new Customer("user1","user8910",1000.0,true, NotificationChannel.EMAIL,"user2@gmail.com","1234567890"));
         customers.add(new Customer("user2","user8910",1000.0,true, NotificationChannel.EMAIL,"user3@gmail.com","1234567890"));

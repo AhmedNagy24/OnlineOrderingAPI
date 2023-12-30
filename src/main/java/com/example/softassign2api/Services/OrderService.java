@@ -1,9 +1,6 @@
 package com.example.softassign2api.Services;
 
-import com.example.softassign2api.Database.CartDatabase;
-import com.example.softassign2api.Database.CategoryDatabase;
-import com.example.softassign2api.Database.CustomerDatabase;
-import com.example.softassign2api.Database.OrderDatabase;
+import com.example.softassign2api.Database.*;
 import com.example.softassign2api.Models.Order;
 import com.example.softassign2api.Models.Product;
 import com.example.softassign2api.Models.ShoppingCart;
@@ -21,11 +18,13 @@ abstract public class OrderService {
     protected CartDatabase cartDatabase;
     protected CustomerDatabase customerDatabase;
     protected CategoryDatabase categoryDatabase;
-    public OrderService(@Qualifier("inMemoryOrder") OrderDatabase OrderDb,@Qualifier("inMemoryCart") CartDatabase CartDb, @Qualifier("inMemoryCustomer") CustomerDatabase CustomerDb, @Qualifier("inMemoryCategory") CategoryDatabase CategoryDb) {
+    protected NotificationDatabase notificationDatabase;
+    public OrderService(@Qualifier("inMemoryOrder") OrderDatabase OrderDb,@Qualifier("inMemoryCart") CartDatabase CartDb, @Qualifier("inMemoryCustomer") CustomerDatabase CustomerDb, @Qualifier("inMemoryCategory") CategoryDatabase CategoryDb, @Qualifier("inMemoryNotification") NotificationDatabase notificationDb) {
         orderDatabase = OrderDb;
         cartDatabase = CartDb;
         customerDatabase = CustomerDb;
         categoryDatabase = CategoryDb;
+        notificationDatabase = notificationDb;
     }
     abstract public String placeOrder(int id);
     abstract public String shipOrder(int id);

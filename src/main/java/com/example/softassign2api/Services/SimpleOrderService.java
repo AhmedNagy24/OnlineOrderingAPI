@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 @Service
 public class SimpleOrderService extends OrderService {
-    public SimpleOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb) {
-        super(orderDb, cartDb, customerDb, categoryDb);
+    public SimpleOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb, NotificationDatabase notificationDb) {
+        super(orderDb, cartDb, customerDb, categoryDb, notificationDb);
     }
 
     @Override
@@ -35,6 +35,8 @@ public class SimpleOrderService extends OrderService {
         }
         customerDatabase.decreaseBalance(customer, totalPrice);
         orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
+        NotificationTemplate template = new PlacedNotification(customer);
+        notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         return "Order ID: "+id+" placed successfully";
     }
 
@@ -51,6 +53,8 @@ public class SimpleOrderService extends OrderService {
         if (customerDatabase.decreaseBalance(customer, shippingFees)){
             orderDatabase.getOrder(id).setStatus(OrderStatus.shipped);
             orderDatabase.getOrder(id).setShipDate(new Date());
+            NotificationTemplate template = new ShippedNotification(customer);
+            notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
             return "Order ID: "+id+" shipped successfully";
         }
         return "Error: Not enough balance to ship order\n Shipping fees: "+shippingFees;

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 @Service
 public class CompoundOrderService extends OrderService {
-    public CompoundOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb) {
-        super(orderDb, cartDb, customerDb, categoryDb);
+    public CompoundOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb, NotificationDatabase notificationDb) {
+        super(orderDb, cartDb, customerDb, categoryDb, notificationDb);
     }
     @Override
     public String placeOrder(int id) {
@@ -41,6 +41,8 @@ public class CompoundOrderService extends OrderService {
             }
             customerDatabase.decreaseBalance(customer, totalPrice);
             order.setStatus(OrderStatus.placed);
+            NotificationTemplate template = new PlacedNotification(customer);
+            notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         }
         orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
         return "Order ID: "+id+" placed successfully";
@@ -67,6 +69,8 @@ public class CompoundOrderService extends OrderService {
             customerDatabase.decreaseBalance(customer, shippingFees);
             order.setStatus(OrderStatus.shipped);
             order.setShipDate(new Date());
+            NotificationTemplate template = new ShippedNotification(customer);
+            notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         }
         orderDatabase.getOrder(id).setStatus(OrderStatus.shipped);
         orderDatabase.getOrder(id).setShipDate(new Date());
