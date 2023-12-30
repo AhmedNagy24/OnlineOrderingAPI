@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 @Component
 public class InMemoryCategory implements ICategoryDatabase {
     private static final ArrayList<Category> categories = new ArrayList<>();
+
     static {
         Map<Product, Integer> temp = new HashMap<>();
         temp.put(new Product("Shirt", "Nike", 100), 60);
@@ -30,44 +32,48 @@ public class InMemoryCategory implements ICategoryDatabase {
         temp.put(new Product("Food", "Cheese", 10), 30);
         categories.add(new Category("Food", temp));
     }
+
     @Override
     public boolean canRemove(Product product, int decrement) {
-        for (Category cat:categories) {
-            if (cat.containsProduct(product)){
+        for (Category cat : categories) {
+            if (cat.containsProduct(product)) {
                 int oldValue = cat.getPartsNum(product);
                 return oldValue > 0 && oldValue >= decrement;
             }
         }
         return false;
     }
+
     @Override
     public boolean decPartsNum(Product product, int decrement) {
-        for (Category cat:categories) {
-            if (cat.containsProduct(product)){
+        for (Category cat : categories) {
+            if (cat.containsProduct(product)) {
                 int indexCat = categories.indexOf(cat);
                 int oldValue = cat.getPartsNum(product);
-                if (oldValue >= decrement){
-                    categories.get(indexCat).updatePartsNum(product, oldValue-decrement);
+                if (oldValue >= decrement) {
+                    categories.get(indexCat).updatePartsNum(product, oldValue - decrement);
                     return true;
-                }else {
+                } else {
                     return false;
                 }
             }
         }
         return false;
     }
+
     @Override
     public boolean incPartsNum(Product product, int increment) {
-        for (Category cat:categories) {
-            if (cat.containsProduct(product)){
+        for (Category cat : categories) {
+            if (cat.containsProduct(product)) {
                 int indexCat = categories.indexOf(cat);
                 int oldValue = cat.getPartsNum(product);
-                categories.get(indexCat).updatePartsNum(product, oldValue+increment);
+                categories.get(indexCat).updatePartsNum(product, oldValue + increment);
                 return true;
             }
         }
         return false;
     }
+
     @Override
     public ArrayList<Object> serializeCategories() {
         ArrayList<Object> serializedCats = new ArrayList<>();

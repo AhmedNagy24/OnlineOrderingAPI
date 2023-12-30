@@ -10,10 +10,13 @@ public abstract class Order {
     protected String customer;
     protected double shippingFees;
     protected double totalProdPrice;
+
     abstract public double getTotalProdPrice();
+
     public void setTotalProdPrice(double totalProdPrice) {
         this.totalProdPrice = totalProdPrice;
     }
+
     public int getId() {
         return id;
     }

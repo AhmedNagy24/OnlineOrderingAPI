@@ -11,12 +11,15 @@ public class NotificationService {
     @Autowired
     @Qualifier("inMemoryNotification")
     private INotificationDatabase InMemoryNotification;
+
     public String getQueue() {
         return InMemoryNotification.getNotifications();
     }
+
     public NotificationTemplate getTheMostNotifiedTemplate() {
         return InMemoryNotification.getMostNotifiedTemplate();
     }
+
     public String getTheMostNotifiedCustomer() {
         return InMemoryNotification.getMostNotifiedCustomer();
     }

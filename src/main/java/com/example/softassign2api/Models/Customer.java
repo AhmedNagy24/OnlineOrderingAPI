@@ -35,6 +35,7 @@ public class Customer {
 
     private String email;
     private String phoneNumber;
+
     public Customer(String userName, String password, double balance, Boolean isLogin, NotificationChannel notificationChannel, String email, String phoneNumber) {
         this.userName = userName;
         this.password = password;
@@ -52,7 +53,6 @@ public class Customer {
     public void setLogin(Boolean login) {
         isLogin = login;
     }
-
 
 
     public String getUserName() {

@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/notifications")
 public class NotificationController {
     @Autowired
-    private  NotificationService notificationService;
+    private NotificationService notificationService;
+
     @GetMapping("/queue")
     public String getQueue() {
         return notificationService.getQueue();
     }
+
     @GetMapping("/mostNotifiedTemplate")
     public NotificationTemplate getMostNotifiedTemplate() {
         return notificationService.getTheMostNotifiedTemplate();
     }
+
     @GetMapping("/mostNotifiedCustomer")
     public String getMostNotifiedCustomer() {
         return notificationService.getTheMostNotifiedCustomer();

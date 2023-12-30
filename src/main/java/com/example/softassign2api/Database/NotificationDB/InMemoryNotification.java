@@ -74,8 +74,7 @@ public class InMemoryNotification implements INotificationDatabase {
             if (entry.getValue() > max) {
                 max = entry.getValue();
                 mostNotifiedCustomer = entry.getKey();
-            }
-            else if(entry.getValue() == max){
+            } else if (entry.getValue() == max) {
                 mostNotifiedCustomer = mostNotifiedCustomer + ", " + entry.getKey();
             }
         }

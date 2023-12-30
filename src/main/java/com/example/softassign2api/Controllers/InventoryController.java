@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
     @Autowired
     private InventoryService inventoryService;
+
     @GetMapping("/get-inventory")
-    public Object getInventory(){
+    public Object getInventory() {
         return inventoryService.getInventory();
     }
 }

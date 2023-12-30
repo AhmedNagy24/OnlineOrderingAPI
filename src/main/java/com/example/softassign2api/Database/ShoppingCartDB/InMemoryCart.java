@@ -5,6 +5,7 @@ import com.example.softassign2api.Models.Order.ShoppingCart;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+
 @Component
 public class InMemoryCart implements ICartDatabase {
     private static final ArrayList<ShoppingCart> carts = new ArrayList<>();
@@ -12,10 +13,10 @@ public class InMemoryCart implements ICartDatabase {
     @Override
     public String addToCart(String id, String name, String vendor, int amount) {
         ShoppingCart cart = getCart(id);
-        if (cart != null){
+        if (cart != null) {
             int index = carts.indexOf(cart);
             return carts.get(index).addProduct(name, vendor, amount);
-        }else {
+        } else {
             cart = new ShoppingCart(new InMemoryCategory(), id);
             String out = cart.addProduct(name, vendor, amount);
             carts.add(cart);
@@ -26,7 +27,7 @@ public class InMemoryCart implements ICartDatabase {
     @Override
     public String delFromCart(String id, String name, String vendor, int amount) {
         ShoppingCart cart = getCart(id);
-        if (cart != null){
+        if (cart != null) {
             int index = carts.indexOf(cart);
             return carts.get(index).removeProduct(name, vendor, amount);
         }
@@ -36,7 +37,7 @@ public class InMemoryCart implements ICartDatabase {
     @Override
     public boolean removeCart(String id) {
         ShoppingCart temp = getCart(id);
-        if (temp != null){
+        if (temp != null) {
             carts.remove(temp);
             return true;
         }
@@ -45,8 +46,8 @@ public class InMemoryCart implements ICartDatabase {
 
     @Override
     public ShoppingCart getCart(String id) {
-        for (ShoppingCart cart : carts){
-            if (cart.getId().equals(id)){
+        for (ShoppingCart cart : carts) {
+            if (cart.getId().equals(id)) {
                 return cart;
             }
         }

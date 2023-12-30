@@ -5,8 +5,8 @@ import com.example.softassign2api.Database.CustomerDB.ICustomerDatabase;
 import com.example.softassign2api.Database.NotificationDB.INotificationDatabase;
 import com.example.softassign2api.Database.OrderDB.IOrderDatabase;
 import com.example.softassign2api.Database.ShoppingCartDB.ICartDatabase;
-import com.example.softassign2api.Models.Order.Order;
 import com.example.softassign2api.Models.Inventory.Product;
+import com.example.softassign2api.Models.Order.Order;
 import com.example.softassign2api.Models.Order.ShoppingCart;
 import com.example.softassign2api.Models.Order.SimpleOrder;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +23,7 @@ abstract public class OrderService {
     protected ICustomerDatabase customerDatabase;
     protected ICategoryDatabase categoryDatabase;
     protected INotificationDatabase notificationDatabase;
+
     public OrderService(@Qualifier("inMemoryOrder") IOrderDatabase OrderDb, @Qualifier("inMemoryCart") ICartDatabase CartDb, @Qualifier("inMemoryCustomer") ICustomerDatabase CustomerDb, @Qualifier("inMemoryCategory") ICategoryDatabase CategoryDb, @Qualifier("inMemoryNotification") INotificationDatabase notificationDb) {
         orderDatabase = OrderDb;
         cartDatabase = CartDb;
@@ -30,10 +31,15 @@ abstract public class OrderService {
         categoryDatabase = CategoryDb;
         notificationDatabase = notificationDb;
     }
+
     abstract public String placeOrder(int id);
+
     abstract public String shipOrder(int id);
+
     abstract public String cancelOrder(int id);
+
     abstract public Object getOrder(int id);
+
     protected static ArrayList<Object> getCartInfo(Order order) {
         ShoppingCart cart = ((SimpleOrder) order).getCart();
         ArrayList<Object> cartInfo = new ArrayList<>();

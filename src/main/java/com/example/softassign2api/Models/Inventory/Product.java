@@ -13,7 +13,7 @@ public class Product {
         this.vendor = vendor;
         this.price = price;
         int random = new Random().nextInt(9999);
-        this.serialNum = name+vendor+random;
+        this.serialNum = name + vendor + random;
     }
 
 

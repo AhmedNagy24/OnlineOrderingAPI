@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class InventoryService {
     ICategoryDatabase categoryDatabase;
-    public InventoryService(@Qualifier("inMemoryCategory") ICategoryDatabase db){
+
+    public InventoryService(@Qualifier("inMemoryCategory") ICategoryDatabase db) {
         categoryDatabase = db;
     }
-    public Object getInventory(){
+
+    public Object getInventory() {
         return categoryDatabase.serializeCategories();
     }
 }

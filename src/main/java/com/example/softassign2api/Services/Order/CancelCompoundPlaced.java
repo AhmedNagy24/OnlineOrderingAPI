@@ -8,12 +8,14 @@ import com.example.softassign2api.Models.Order.*;
 import java.util.ArrayList;
 
 public class CancelCompoundPlaced implements IOrderAction {
-    private ICustomerDatabase customerDatabase;
-    private ICategoryDatabase categoryDatabase;
+    private final ICustomerDatabase customerDatabase;
+    private final ICategoryDatabase categoryDatabase;
+
     public CancelCompoundPlaced(ICustomerDatabase customerDatabase, ICategoryDatabase categoryDb) {
         this.customerDatabase = customerDatabase;
         this.categoryDatabase = categoryDb;
     }
+
     @Override
     public String performAction(Order order) {
         ArrayList<Order> orders = ((CompoundOrder) order).getOrders();
@@ -28,6 +30,6 @@ public class CancelCompoundPlaced implements IOrderAction {
             o.setStatus(OrderStatus.cancelled);
         }
         order.setStatus(OrderStatus.cancelled);
-        return "Order ID: "+order.getId()+" cancelled successfully";
+        return "Order ID: " + order.getId() + " cancelled successfully";
     }
 }

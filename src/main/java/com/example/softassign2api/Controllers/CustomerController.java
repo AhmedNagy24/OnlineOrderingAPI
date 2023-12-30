@@ -10,14 +10,17 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
     @PostMapping("/register")
     public String registerUser(@RequestBody Customer user) {
         return customerService.registerUser(user);
     }
+
     @GetMapping("/login/{username}/{password}")
-    public String LoginUser(@PathVariable("username") String username,@PathVariable("password")String password) {
+    public String LoginUser(@PathVariable("username") String username, @PathVariable("password") String password) {
         return customerService.SignInUser(username, password);
     }
+
     @GetMapping("/get-customer/{username}")
     public Customer getCustomer(@PathVariable("username") String username) {
         return customerService.getCustomer(username);
