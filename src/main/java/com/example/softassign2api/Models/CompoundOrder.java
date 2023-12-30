@@ -1,15 +1,16 @@
 package com.example.softassign2api.Models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class CompoundOrder extends Order {
-    private Map<String, Order> customerMap;
+    private ArrayList<Order> orders;
     public CompoundOrder(){
-        customerMap = new HashMap<>();
+        orders = new ArrayList<>();
     }
     public void addOrder(Order order){
-        customerMap.put(order.getCustomer(), order);
+        orders.add(order);
     }
-
+    public ArrayList<Order> getOrders(){
+        return orders;
+    }
 }

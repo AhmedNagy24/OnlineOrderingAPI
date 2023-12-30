@@ -2,14 +2,20 @@ package com.example.softassign2api.Models;
 
 import java.util.Date;
 
-abstract class Order {
+public abstract class Order {
     protected int id;
-    protected Date orderDate;
+    protected Date shipDate = null;
     protected OrderStatus status;
     protected String shippingAddresses;
     protected String customer;
     protected double shippingFees;
-
+    protected double totalProdPrice;
+    public double getTotalProdPrice() {
+        return totalProdPrice;
+    }
+    public void setTotalProdPrice(double totalProdPrice) {
+        this.totalProdPrice = totalProdPrice;
+    }
     public int getId() {
         return id;
     }
@@ -18,12 +24,12 @@ abstract class Order {
         this.id = id;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public Date getShipDate() {
+        return shipDate;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setShipDate(Date shipDate) {
+        this.shipDate = shipDate;
     }
 
     public OrderStatus getStatus() {

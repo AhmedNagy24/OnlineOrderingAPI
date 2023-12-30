@@ -9,4 +9,6 @@ public interface CustomerDatabase {
     boolean IfUserNameExists(String username);
 
     Customer CheckCredentials(String username, String password);
+    boolean decreaseBalance(String username, double amount);
+    boolean increaseBalance(String username, double amount);
 }

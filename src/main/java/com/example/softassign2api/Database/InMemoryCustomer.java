@@ -52,4 +52,30 @@ public class InMemoryCustomer implements CustomerDatabase{
         }
         return null;
     }
+
+    @Override
+    public boolean decreaseBalance(String username, double amount) {
+        for (Customer temp : customers) {
+            if (temp.getUserName().equals(username)){
+                if (temp.getBalance() >= amount){
+                    temp.setBalance(temp.getBalance()-amount);
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean increaseBalance(String username, double amount) {
+        for (Customer temp : customers) {
+            if (temp.getUserName().equals(username)){
+                temp.setBalance(temp.getBalance()+amount);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
