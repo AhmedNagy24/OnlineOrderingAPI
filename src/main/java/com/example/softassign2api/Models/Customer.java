@@ -1,6 +1,6 @@
 package com.example.softassign2api.Models;
 
-import lombok.Getter;
+import com.example.softassign2api.Models.Notification.NotificationChannel;
 
 public class Customer {
     private String userName;

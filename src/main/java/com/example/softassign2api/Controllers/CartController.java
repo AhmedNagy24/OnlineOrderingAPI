@@ -1,12 +1,10 @@
 package com.example.softassign2api.Controllers;
 
-import com.example.softassign2api.Models.ShoppingCart;
-import com.example.softassign2api.Services.CartService;
+import com.example.softassign2api.Services.Order.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 public class CartController {

@@ -1,9 +1,7 @@
 package com.example.softassign2api.Services;
 
-import com.example.softassign2api.Database.CustomerDatabase;
-import com.example.softassign2api.Database.NotificationDatabase;
-import com.example.softassign2api.Models.Customer;
-import com.example.softassign2api.Models.NotificationTemplate;
+import com.example.softassign2api.Database.NotificationDB.INotificationDatabase;
+import com.example.softassign2api.Models.Notification.NotificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
     @Autowired
     @Qualifier("inMemoryNotification")
-    private NotificationDatabase InMemoryNotification;
+    private INotificationDatabase InMemoryNotification;
     public String getQueue() {
         return InMemoryNotification.getNotifications();
     }

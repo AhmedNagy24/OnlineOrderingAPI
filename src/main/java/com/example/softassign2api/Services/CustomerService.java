@@ -1,7 +1,7 @@
 package com.example.softassign2api.Services;
 
 
-import com.example.softassign2api.Database.CustomerDatabase;
+import com.example.softassign2api.Database.CustomerDB.ICustomerDatabase;
 import com.example.softassign2api.Models.Customer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
-    private final CustomerDatabase customerDatabase;
+    private final ICustomerDatabase customerDatabase;
 
-    public CustomerService(@Qualifier("inMemoryCustomer") CustomerDatabase customerDatabase) {
+    public CustomerService(@Qualifier("inMemoryCustomer") ICustomerDatabase customerDatabase) {
         this.customerDatabase = customerDatabase;
     }
 

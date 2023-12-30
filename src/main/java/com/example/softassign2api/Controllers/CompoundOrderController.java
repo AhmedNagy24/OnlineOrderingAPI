@@ -1,8 +1,7 @@
 package com.example.softassign2api.Controllers;
 
-import com.example.softassign2api.Services.CompoundOrderService;
-import com.example.softassign2api.Services.OrderService;
-import com.example.softassign2api.Services.SimpleOrderService;
+import com.example.softassign2api.Services.Order.CompoundOrderService;
+import com.example.softassign2api.Services.Order.OrderService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 

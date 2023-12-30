@@ -1,6 +1,6 @@
 package com.example.softassign2api.Controllers;
 
-import com.example.softassign2api.Models.NotificationTemplate;
+import com.example.softassign2api.Models.Notification.NotificationTemplate;
 import com.example.softassign2api.Services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
