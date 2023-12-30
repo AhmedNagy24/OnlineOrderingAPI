@@ -53,7 +53,7 @@ public class CompoundOrderService extends OrderService {
             }
             customerDatabase.decreaseBalance(customer, totalPrice);
             order.setStatus(OrderStatus.placed);
-            NotificationTemplate template = new PlacedNotification(customer);
+            NotificationTemplate template = new PlacedNotification();
             notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         }
         orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
@@ -82,7 +82,7 @@ public class CompoundOrderService extends OrderService {
             customerDatabase.decreaseBalance(customer, shippingFees);
             order.setStatus(OrderStatus.shipped);
             order.setShipDate(new Date());
-            NotificationTemplate template = new ShippedNotification(customer);
+            NotificationTemplate template = new ShippedNotification();
             notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         }
         orderDatabase.getOrder(id).setStatus(OrderStatus.shipped);

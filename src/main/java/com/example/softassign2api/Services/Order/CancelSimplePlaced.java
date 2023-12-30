@@ -34,7 +34,7 @@ public class CancelSimplePlaced implements IOrderAction {
             categoryDatabase.incPartsNum(entry.getKey(), entry.getValue());
         }
         order.setStatus(OrderStatus.cancelled);
-        NotificationTemplate template = new CancelNotification(customer);
+        NotificationTemplate template = new CancelNotification();
         notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         return "Order: " + order.getId() + " is cancelled";
     }

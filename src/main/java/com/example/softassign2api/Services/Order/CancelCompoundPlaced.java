@@ -33,7 +33,7 @@ public class CancelCompoundPlaced implements IOrderAction {
                 categoryDatabase.incPartsNum(p, cart.getCart().get(p));
             }
             o.setStatus(OrderStatus.cancelled);
-            NotificationTemplate template = new CancelNotification(customer);
+            NotificationTemplate template = new CancelNotification();
             notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         }
         order.setStatus(OrderStatus.cancelled);

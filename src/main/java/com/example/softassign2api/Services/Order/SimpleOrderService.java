@@ -50,7 +50,7 @@ public class SimpleOrderService extends OrderService {
         }
         customerDatabase.decreaseBalance(customer, totalPrice);
         orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
-        NotificationTemplate template = new PlacedNotification(customer);
+        NotificationTemplate template = new PlacedNotification();
         notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
         return "Order ID: " + id + " placed successfully";
     }
@@ -68,7 +68,7 @@ public class SimpleOrderService extends OrderService {
         if (customerDatabase.decreaseBalance(customer, shippingFees)) {
             orderDatabase.getOrder(id).setStatus(OrderStatus.shipped);
             orderDatabase.getOrder(id).setShipDate(new Date());
-            NotificationTemplate template = new ShippedNotification(customer);
+            NotificationTemplate template = new ShippedNotification();
             notificationDatabase.saveNotification(customerDatabase.getCustomer(customer), template);
             return "Order ID: " + id + " shipped successfully";
         }

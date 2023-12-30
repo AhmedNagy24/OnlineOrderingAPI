@@ -1,13 +1,12 @@
 package com.example.softassign2api.Database.NotificationDB;
 
 import com.example.softassign2api.Models.Customer;
+import com.example.softassign2api.Models.Notification.Notification;
+import com.example.softassign2api.Models.Notification.NotificationChannel;
 import com.example.softassign2api.Models.Notification.NotificationTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Component
 public class InMemoryNotification implements INotificationDatabase {
@@ -23,9 +22,12 @@ public class InMemoryNotification implements INotificationDatabase {
     }
 
     public void saveNotification(Customer recipient, NotificationTemplate notificationTemplate) {
-        String notification = notificationTemplate.createBody();
-        notificationsQueue.add(notification);
-        updateNotificationStatistics(recipient.getUserName());
+        ArrayList<String> channels = Notification.adaptMessage(recipient);
+        for (String channel : channels) {
+            String notification = notificationTemplate.createBody(channel);
+            notificationsQueue.add(notification);
+            updateNotificationStatistics(channel);
+        }
         updateNotificationTemplateStatistics(notificationTemplate);
         new NotificationPopDelay(60000);
     }
