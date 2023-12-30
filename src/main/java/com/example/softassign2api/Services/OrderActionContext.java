@@ -1,5 +1,7 @@
 package com.example.softassign2api.Services;
 
+import com.example.softassign2api.Models.Order;
+
 public class OrderActionContext {
     private OrderAction action;
 
@@ -7,8 +9,8 @@ public class OrderActionContext {
         this.action = action;
     }
 
-    public String executeAction(int id) {
-        return action.performAction(id);
+    public String executeAction(Order order) {
+        return action.performAction(order);
     }
 
 }

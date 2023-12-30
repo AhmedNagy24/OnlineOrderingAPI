@@ -13,4 +13,12 @@ public class CompoundOrder extends Order {
     public ArrayList<Order> getOrders(){
         return orders;
     }
+    @Override
+    public double getTotalProdPrice(){
+        double total = 0;
+        for(Order order : orders){
+            total += order.getTotalProdPrice();
+        }
+        return total;
+    }
 }

@@ -1,22 +1,29 @@
 package com.example.softassign2api.Services;
 
+import com.example.softassign2api.Database.CategoryDatabase;
 import com.example.softassign2api.Database.CustomerDatabase;
 import com.example.softassign2api.Database.OrderDatabase;
-import com.example.softassign2api.Models.OrderStatus;
+import com.example.softassign2api.Models.*;
+
+import java.util.Map;
 
 public class CancelSimplePlaced implements OrderAction{
-    private OrderDatabase orderDatabase;
     private CustomerDatabase customerDatabase;
-    public CancelSimplePlaced(OrderDatabase orderDatabase, CustomerDatabase customerDatabase) {
-        this.orderDatabase = orderDatabase;
+    private CategoryDatabase categoryDatabase;
+    public CancelSimplePlaced(CustomerDatabase customerDatabase, CategoryDatabase categoryDb) {
         this.customerDatabase = customerDatabase;
+        this.categoryDatabase = categoryDb;
     }
     @Override
-    public String performAction(int id) {
-        String customer = orderDatabase.getOrder(id).getCustomer();
-        double orderPrice = orderDatabase.getOrder(id).getTotalProdPrice();
-        customerDatabase.getCustomer(customer).setBalance(customerDatabase.getCustomer(customer).getBalance() + orderPrice);
-        orderDatabase.getOrder(id).setStatus(OrderStatus.cancelled);
-        return "Order "+id+" is cancelled";
+    public String performAction(Order order) {
+        String customer = order.getCustomer();
+        double orderPrice = order.getTotalProdPrice();
+        customerDatabase.increaseBalance(customer, orderPrice);
+        ShoppingCart cart = ((SimpleOrder)order).getCart();
+        for(Map.Entry<Product, Integer> entry : cart.getCart().entrySet()){
+            categoryDatabase.incPartsNum(entry.getKey(), entry.getValue());
+        }
+        order.setStatus(OrderStatus.cancelled);
+        return "Order: "+order.getId()+" is cancelled";
     }
 }

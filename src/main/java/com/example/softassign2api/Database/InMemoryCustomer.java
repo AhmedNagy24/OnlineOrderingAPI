@@ -13,6 +13,9 @@ public class InMemoryCustomer implements CustomerDatabase{
     public InMemoryCustomer(){
         customers.add(new Customer("admin","user123456",1000.0,true, NotificationChannel.EMAIL,"user1@gmail.com","1234567890"));
         customers.add(new Customer("user1","user8910",1000.0,true, NotificationChannel.EMAIL,"user2@gmail.com","1234567890"));
+        customers.add(new Customer("user2","user8910",1000.0,true, NotificationChannel.EMAIL,"user3@gmail.com","1234567890"));
+        customers.add(new Customer("user3","user8910",1000.0,true, NotificationChannel.EMAIL,"user4@gmail.com","1234567890"));
+        customers.add(new Customer("user4","user8910",1000.0,true, NotificationChannel.EMAIL,"user5@gmail.com","1234567890"));
     }
     @Override
     public void add(Customer customer) {
@@ -72,6 +75,15 @@ public class InMemoryCustomer implements CustomerDatabase{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean canDecreaseBalance(String username, double amount) {
+        Customer temp = getCustomer(username);
+        if (temp == null){
+            return false;
+        }
+        return temp.getBalance() >= amount;
     }
 
 }

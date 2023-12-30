@@ -2,9 +2,7 @@ package com.example.softassign2api.Services;
 
 
 import com.example.softassign2api.Database.CustomerDatabase;
-import com.example.softassign2api.Database.InMemoryCustomer;
 import com.example.softassign2api.Models.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +33,7 @@ public class CustomerService {
           }
           return "Login Failed";
     }
-
-
+    public Customer getCustomer(String username){
+        return customerDatabase.getCustomer(username);
+    }
 }

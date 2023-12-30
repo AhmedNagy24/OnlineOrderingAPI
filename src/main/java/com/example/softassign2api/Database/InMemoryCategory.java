@@ -10,8 +10,7 @@ import java.util.Map;
 @Component
 public class InMemoryCategory implements CategoryDatabase{
     private static final ArrayList<Category> categories = new ArrayList<>();
-
-    public InMemoryCategory(){
+    static {
         Map<Product, Integer> temp = new HashMap<>();
         temp.put(new Product("Shirt", "Nike", 100), 60);
         temp.put(new Product("Shirt", "Adidas", 100), 50);
@@ -31,7 +30,6 @@ public class InMemoryCategory implements CategoryDatabase{
         temp.put(new Product("Food", "Cheese", 10), 30);
         categories.add(new Category("Food", temp));
     }
-
     @Override
     public boolean canRemove(Product product, int decrement) {
         for (Category cat:categories) {
@@ -42,7 +40,6 @@ public class InMemoryCategory implements CategoryDatabase{
         }
         return false;
     }
-
     @Override
     public boolean decPartsNum(Product product, int decrement) {
         for (Category cat:categories) {
@@ -59,7 +56,6 @@ public class InMemoryCategory implements CategoryDatabase{
         }
         return false;
     }
-
     @Override
     public boolean incPartsNum(Product product, int increment) {
         for (Category cat:categories) {
@@ -72,9 +68,6 @@ public class InMemoryCategory implements CategoryDatabase{
         }
         return false;
     }
-
-
-
     @Override
     public ArrayList<Object> serializeCategories() {
         ArrayList<Object> serializedCats = new ArrayList<>();

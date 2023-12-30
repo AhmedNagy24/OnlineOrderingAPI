@@ -8,4 +8,9 @@ public class SimpleOrder extends Order {
     public ShoppingCart getCart() {
         return cart;
     }
+
+    @Override
+    public double getTotalProdPrice() {
+        return cart.getTotalPrice();
+    }
 }

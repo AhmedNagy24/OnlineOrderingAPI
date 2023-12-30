@@ -5,7 +5,6 @@ import com.example.softassign2api.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 @RestController
 public class CustomerController {
 
@@ -18,5 +17,9 @@ public class CustomerController {
     @GetMapping("/login/{username}/{password}")
     public String LoginUser(@PathVariable("username") String username,@PathVariable("password")String password) {
         return customerService.SignInUser(username, password);
+    }
+    @GetMapping("/get-customer/{username}")
+    public Customer getCustomer(@PathVariable("username") String username) {
+        return customerService.getCustomer(username);
     }
 }

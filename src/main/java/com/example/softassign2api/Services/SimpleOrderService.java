@@ -1,31 +1,51 @@
 package com.example.softassign2api.Services;
 
 import com.example.softassign2api.Database.*;
-import com.example.softassign2api.Models.OrderStatus;
-import com.example.softassign2api.Models.ShoppingCart;
-import com.example.softassign2api.Models.SimpleOrder;
+import com.example.softassign2api.Models.*;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Random;
-
+import java.util.*;
+@Service
 public class SimpleOrderService extends OrderService {
-    public SimpleOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb) {
-        super(orderDb, cartDb, customerDb);
+    public SimpleOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb) {
+        super(orderDb, cartDb, customerDb, categoryDb);
     }
 
     @Override
     public String placeOrder(int id) {
-        String customer = orderDatabase.getOrder(id).getCustomer();
-        double totalPrice = cartDatabase.getCart(customer).getTotalPrice();
-        if (customerDatabase.decreaseBalance(customer, totalPrice)){
-            orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
-            return "Order ID: "+id+" placed successfully";
+        if (orderDatabase.getOrder(id) == null){
+            return "Error: Order ID: "+id+" does not exist";
         }
-        return "Error: Not enough balance to place order\n Total price: "+totalPrice;
+        if (orderDatabase.getOrder(id).getStatus() != OrderStatus.pending){
+            return "Error: Order ID: "+id+" cannot be placed";
+        }
+        String customer = orderDatabase.getOrder(id).getCustomer();
+        double totalPrice = orderDatabase.getOrder(id).getTotalProdPrice();
+        ShoppingCart cart = ((SimpleOrder)orderDatabase.getOrder(id)).getCart();
+        if (!customerDatabase.canDecreaseBalance(customer, totalPrice)){
+            return "Error: Not enough balance to place order\n Total price: "+totalPrice;
+        }
+        for (Map.Entry<Product, Integer> entry : cart.getCart().entrySet()) {
+            if(!categoryDatabase.canRemove(entry.getKey(), entry.getValue())){
+                return "Error: Not enough parts in stock for "+entry.getKey().getName()+" from "+entry.getKey().getVendor();
+            }
+        }
+        for (Map.Entry<Product, Integer> entry : cart.getCart().entrySet()) {
+            categoryDatabase.decPartsNum(entry.getKey(), entry.getValue());
+        }
+        customerDatabase.decreaseBalance(customer, totalPrice);
+        orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
+        return "Order ID: "+id+" placed successfully";
     }
 
     @Override
     public String shipOrder(int id) {
+        if (orderDatabase.getOrder(id) == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        if (orderDatabase.getOrder(id).getStatus() != OrderStatus.placed){
+            return "Error: Order ID: "+id+" cannot be shipped";
+        }
         String customer = orderDatabase.getOrder(id).getCustomer();
         double shippingFees = orderDatabase.getOrder(id).getShippingFees();
         if (customerDatabase.decreaseBalance(customer, shippingFees)){
@@ -38,12 +58,16 @@ public class SimpleOrderService extends OrderService {
 
     @Override
     public String cancelOrder(int id) {
-        if (orderDatabase.getOrder(id).getStatus() == OrderStatus.placed){
-            OrderActionContext context = new OrderActionContext(new CancelSimplePlaced(new InMemoryOrder(), new InMemoryCustomer()));
-            return context.executeAction(id);
-        } else if (orderDatabase.getOrder(id).getStatus() == OrderStatus.shipped){
-            OrderActionContext context = new OrderActionContext(new CancelSimpleShipped(new InMemoryOrder(), new InMemoryCustomer()));
-            return context.executeAction(id);
+        Order order = orderDatabase.getOrder(id);
+        if(order == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        if (order.getStatus() == OrderStatus.placed){
+            OrderActionContext context = new OrderActionContext(new CancelSimplePlaced(new InMemoryCustomer(), new InMemoryCategory()));
+            return context.executeAction(orderDatabase.getOrder(id));
+        } else if (order.getStatus() == OrderStatus.shipped){
+            OrderActionContext context = new OrderActionContext(new CancelSimpleShipped(new InMemoryCustomer()));
+            return context.executeAction(orderDatabase.getOrder(id));
         } else {
             return "Error: Order ID: "+id+" cannot be cancelled";
         }
@@ -51,14 +75,28 @@ public class SimpleOrderService extends OrderService {
 
     @Override
     public Object getOrder(int id) {
-        return null;
+        Order temp = orderDatabase.getOrder(id);
+        if (temp == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        Map<String, Object> orderInfo = new HashMap<>();
+        orderInfo.put("id", temp.getId());
+        orderInfo.put("customer", temp.getCustomer());
+        orderInfo.put("status", temp.getStatus());
+        orderInfo.put("shippingFees", temp.getShippingFees());
+        orderInfo.put("totalProdPrice", temp.getTotalProdPrice());
+        orderInfo.put("shipDate", temp.getShipDate());
+        orderInfo.put("shippingAddresses", temp.getShippingAddresses());
+        ArrayList<Object> cartInfo = getCartInfo(temp);
+        orderInfo.put("cart", cartInfo);
+        return orderInfo;
     }
 
-    public String addSimpleOrder(String customer, String shippingAddress){
+    public String addOrder(String customer, String shippingAddress){
         SimpleOrder order = new SimpleOrder();
         ShoppingCart cart = cartDatabase.getCart(customer);
         if (cart == null){
-            return "Cart is empty";
+            return "Cart is empty or user does not exist";
         }
         order.setCart(cart);
         order.setCustomer(customer);

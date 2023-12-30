@@ -1,51 +1,136 @@
 package com.example.softassign2api.Services;
 
-import com.example.softassign2api.Database.CartDatabase;
-import com.example.softassign2api.Database.CustomerDatabase;
-import com.example.softassign2api.Database.OrderDatabase;
-import com.example.softassign2api.Models.CompoundOrder;
-import com.example.softassign2api.Models.OrderStatus;
-import com.example.softassign2api.Models.ShoppingCart;
-import com.example.softassign2api.Models.SimpleOrder;
+import com.example.softassign2api.Database.*;
+import com.example.softassign2api.Models.*;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.Random;
-
+import java.util.*;
+@Service
 public class CompoundOrderService extends OrderService {
-    public CompoundOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb) {
-        super(orderDb, cartDb, customerDb);
+    public CompoundOrderService(OrderDatabase orderDb, CartDatabase cartDb, CustomerDatabase customerDb, CategoryDatabase categoryDb) {
+        super(orderDb, cartDb, customerDb, categoryDb);
     }
-
     @Override
     public String placeOrder(int id) {
-        return null;
+        if (orderDatabase.getOrder(id) == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        if (orderDatabase.getOrder(id).getStatus() != OrderStatus.pending){
+            return "Error: Order ID: "+id+" cannot be placed";
+        }
+        ArrayList<Order> orders = ((CompoundOrder)orderDatabase.getOrder(id)).getOrders();
+        for (Order order : orders) {
+            String customer = order.getCustomer();
+            ShoppingCart cart = ((SimpleOrder)order).getCart();
+            double totalPrice = cart.getTotalPrice();
+            if (!customerDatabase.canDecreaseBalance(customer, totalPrice)){
+                return "Error: Not enough balance to place order\n Total price: "+totalPrice;
+            }
+            for (Map.Entry<Product, Integer> entry : cart.getCart().entrySet()) {
+                if(!categoryDatabase.canRemove(entry.getKey(), entry.getValue())){
+                    return "Error: Not enough parts in stock for "+entry.getKey()+" from "+entry.getKey();
+                }
+            }
+        }
+        for (Order order : orders) {
+            String customer = order.getCustomer();
+            ShoppingCart cart = ((SimpleOrder)order).getCart();
+            double totalPrice = cart.getTotalPrice();
+            for (Map.Entry<Product, Integer> entry : cart.getCart().entrySet()) {
+                categoryDatabase.decPartsNum(entry.getKey(), entry.getValue());
+            }
+            customerDatabase.decreaseBalance(customer, totalPrice);
+            order.setStatus(OrderStatus.placed);
+        }
+        orderDatabase.getOrder(id).setStatus(OrderStatus.placed);
+        return "Order ID: "+id+" placed successfully";
     }
-
     @Override
     public String shipOrder(int id) {
-        return null;
+        if (orderDatabase.getOrder(id) == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        if (orderDatabase.getOrder(id).getStatus() != OrderStatus.placed){
+            return "Error: Order ID: "+id+" cannot be shipped";
+        }
+        ArrayList<Order> orders = ((CompoundOrder)orderDatabase.getOrder(id)).getOrders();
+        for (Order order : orders) {
+            String customer = order.getCustomer();
+            double shippingFees = order.getShippingFees();
+            if (!customerDatabase.canDecreaseBalance(customer, shippingFees)){
+                return "Error: Not enough balance to ship order\n Shipping fees: "+shippingFees;
+            }
+        }
+        for (Order order : orders) {
+            String customer = order.getCustomer();
+            double shippingFees = order.getShippingFees();
+            customerDatabase.decreaseBalance(customer, shippingFees);
+            order.setStatus(OrderStatus.shipped);
+            order.setShipDate(new Date());
+        }
+        orderDatabase.getOrder(id).setStatus(OrderStatus.shipped);
+        orderDatabase.getOrder(id).setShipDate(new Date());
+        return "Order ID: "+id+" shipped successfully";
     }
-
     @Override
     public String cancelOrder(int id) {
-        return null;
+        Order order = orderDatabase.getOrder(id);
+        if(order == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        if (order.getStatus() == OrderStatus.placed){
+            OrderActionContext context = new OrderActionContext(new CancelCompoundPlaced(new InMemoryCustomer(), new InMemoryCategory()));
+            return context.executeAction(orderDatabase.getOrder(id));
+        } else if (order.getStatus() == OrderStatus.shipped){
+            OrderActionContext context = new OrderActionContext(new CancelCompoundShipped(new InMemoryCustomer()));
+            return context.executeAction(orderDatabase.getOrder(id));
+        } else {
+            return "Error: Order ID: "+id+" cannot be cancelled";
+        }
     }
-
     @Override
     public Object getOrder(int id) {
-        return null;
+        if (orderDatabase.getOrder(id) == null){
+            return "Error: Order ID: "+id+" does not exist";
+        }
+        ArrayList<Order> orders = ((CompoundOrder)orderDatabase.getOrder(id)).getOrders();
+        ArrayList<Object> ordersInfo = new ArrayList<>();
+        for (Order order : orders) {
+            Map<String, Object> tempInfo = new HashMap<>();
+            tempInfo.put("id", order.getId());
+            tempInfo.put("shipDate", order.getShipDate());
+            tempInfo.put("status", order.getStatus());
+            tempInfo.put("shippingAddresses", order.getShippingAddresses());
+            tempInfo.put("customer", order.getCustomer());
+            tempInfo.put("shippingFees", order.getShippingFees());
+            tempInfo.put("totalProdPrice", order.getTotalProdPrice());
+            tempInfo.put("cart", getCartInfo(order));
+            ordersInfo.add(tempInfo);
+        }
+        return ordersInfo;
     }
-
-    public String addCompoundOrder(Map<String, String> map){
+    public String addOrder(String userName, String userAddress, Map<String, String> customers){
+        if (customers.isEmpty()){
+            return "Error: No customers in order";
+        }
+        if (customerDatabase.getCustomer(userName) == null){
+            return "Error: Customer "+userName+" does not exist";
+        }else if (!customerDatabase.getCustomer(userName).getLogin()){
+            return "Error: Customer "+userName+" is not logged in";
+        }
+        for (Map.Entry<String, String> entry : customers.entrySet()) {
+            if (customerDatabase.getCustomer(entry.getKey()) == null){
+                return "Error: Customer "+entry.getKey()+" does not exist";
+            }
+        }
         CompoundOrder compOrder = new CompoundOrder();
         Random random = new Random();
         int shippingFees = random.nextInt(100);
-        shippingFees /= map.size();
         int id = orderDatabase.getLastID()+1;
         ArrayList<String> cartsToRemove = new ArrayList<>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        customers.put(userName, userAddress);
+        shippingFees /= customers.size();
+        for (Map.Entry<String, String> entry : customers.entrySet()) {
             SimpleOrder simpleOrder = new SimpleOrder();
             ShoppingCart cart = cartDatabase.getCart(entry.getKey());
             if (cart == null){
@@ -69,6 +154,9 @@ public class CompoundOrderService extends OrderService {
         compOrder.setShipDate(new Date());
         compOrder.setStatus(OrderStatus.pending);
         compOrder.setShippingFees(shippingFees);
+        compOrder.setCustomer(userName);
+        compOrder.setShippingAddresses(userAddress);
+        compOrder.setTotalProdPrice(compOrder.getTotalProdPrice());
         orderDatabase.addOrder(compOrder);
         return "Order added successfully with id: "+compOrder.getId();
     }
