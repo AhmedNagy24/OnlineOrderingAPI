@@ -32,7 +32,4 @@ public class CustomerService {
         return "Login Failed";
     }
 
-    public Customer getCustomer(String username) {
-        return customerDatabase.getCustomer(username);
-    }
 }

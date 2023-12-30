@@ -20,9 +20,4 @@ public class CustomerController {
     public String LoginUser(@PathVariable("username") String username, @PathVariable("password") String password) {
         return customerService.SignInUser(username, password);
     }
-
-    @GetMapping("/get-customer/{username}")
-    public Customer getCustomer(@PathVariable("username") String username) {
-        return customerService.getCustomer(username);
-    }
 }

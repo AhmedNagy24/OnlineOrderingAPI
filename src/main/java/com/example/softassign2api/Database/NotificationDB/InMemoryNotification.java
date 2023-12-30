@@ -2,7 +2,6 @@ package com.example.softassign2api.Database.NotificationDB;
 
 import com.example.softassign2api.Models.Customer;
 import com.example.softassign2api.Models.Notification.Notification;
-import com.example.softassign2api.Models.Notification.NotificationChannel;
 import com.example.softassign2api.Models.Notification.NotificationTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +22,14 @@ public class InMemoryNotification implements INotificationDatabase {
 
     public void saveNotification(Customer recipient, NotificationTemplate notificationTemplate) {
         ArrayList<String> channels = Notification.adaptMessage(recipient);
+        updateNotificationTemplateStatistics(notificationTemplate);
         for (String channel : channels) {
             String notification = notificationTemplate.createBody(channel);
             notificationsQueue.add(notification);
             updateNotificationStatistics(channel);
         }
-        updateNotificationTemplateStatistics(notificationTemplate);
-        new NotificationPopDelay(60000);
+
+        new NotificationPopDelay(90000);
     }
 
     private void updateNotificationStatistics(String recipient) {
@@ -59,7 +59,7 @@ public class InMemoryNotification implements INotificationDatabase {
     }
 
     //function to return the most notifed template
-    public NotificationTemplate getMostNotifiedTemplate() {
+    public String getMostNotifiedTemplate() {
         NotificationTemplate mostNotifiedTemplate = null;
         int max = 0;
         for (Map.Entry<NotificationTemplate, Integer> entry : notificationTemplateStastics.entrySet()) {
@@ -68,7 +68,7 @@ public class InMemoryNotification implements INotificationDatabase {
                 mostNotifiedTemplate = entry.getKey();
             }
         }
-        return mostNotifiedTemplate;
+        return mostNotifiedTemplate.getTemplate();
     }
 
     //function to return the most notified customer

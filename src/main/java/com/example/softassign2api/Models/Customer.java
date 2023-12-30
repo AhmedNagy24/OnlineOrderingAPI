@@ -35,7 +35,7 @@ public class Customer {
     private String email;
     private String phoneNumber;
 
-    public Customer(String userName, String password, double balance, Boolean isLogin, NotificationChannel notificationChannel, String email, String phoneNumber) {
+    public Customer(String userName, String password, double balance,  NotificationChannel notificationChannel, String email, String phoneNumber) {
         this.userName = userName;
         this.password = password;
         this.balance = balance;

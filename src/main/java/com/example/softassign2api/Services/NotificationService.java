@@ -16,7 +16,7 @@ public class NotificationService {
         return InMemoryNotification.getNotifications();
     }
 
-    public NotificationTemplate getTheMostNotifiedTemplate() {
+    public String getTheMostNotifiedTemplate() {
         return InMemoryNotification.getMostNotifiedTemplate();
     }
 

@@ -8,7 +8,7 @@ public interface INotificationDatabase {
 
     String getNotifications();
 
-    NotificationTemplate getMostNotifiedTemplate();
+    String getMostNotifiedTemplate();
 
     String getMostNotifiedCustomer();
 
