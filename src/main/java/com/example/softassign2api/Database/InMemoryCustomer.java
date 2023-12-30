@@ -1,5 +1,6 @@
 package com.example.softassign2api.Database;
 import com.example.softassign2api.Models.Customer;
+import com.example.softassign2api.Models.NotificationChannel;
 import org.springframework.stereotype.Component;
 
 
@@ -10,14 +11,9 @@ import java.util.Objects;
 public class InMemoryCustomer implements CustomerDatabase{
     private static ArrayList<Customer> customers = new ArrayList<>();
     public InMemoryCustomer(){
-        customers.add(new Customer("user1","user123456",1000,false));
-        customers.add(new Customer("user2","user123456",1000,false));
-        customers.add(new Customer("user3","user123456",1000,false));
-        customers.add(new Customer("user4","user123456",1000,false));
-        customers.add(new Customer("user5","user123456",1000,false));
+        customers.add(new Customer("admin","user123456",1000.0,true, NotificationChannel.EMAIL,"user1@gmail.com","1234567890"));
+        customers.add(new Customer("user1","user8910",1000.0,true, NotificationChannel.EMAIL,"user2@gmail.com","1234567890"));
     }
-
-
     @Override
     public void add(Customer customer) {
         customers.add(customer);
