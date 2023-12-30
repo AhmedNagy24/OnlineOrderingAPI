@@ -97,7 +97,7 @@ public class CompoundOrderService extends OrderService {
             return "Error: Order ID: " + id + " does not exist";
         }
         if (order.getStatus() == OrderStatus.placed) {
-            OrderActionContext context = new OrderActionContext(new CancelCompoundPlaced(new InMemoryCustomer(), new InMemoryCategory()));
+            OrderActionContext context = new OrderActionContext(new CancelCompoundPlaced(new InMemoryCustomer(), new InMemoryCategory(), notificationDatabase));
             return context.executeAction(orderDatabase.getOrder(id));
         } else if (order.getStatus() == OrderStatus.shipped) {
             OrderActionContext context = new OrderActionContext(new CancelCompoundShipped(new InMemoryCustomer()));
@@ -135,8 +135,6 @@ public class CompoundOrderService extends OrderService {
         }
         if (customerDatabase.getCustomer(userName) == null) {
             return "Error: Customer " + userName + " does not exist";
-        } else if (!customerDatabase.getCustomer(userName).getLogin()) {
-            return "Error: Customer " + userName + " is not logged in";
         }
         for (Map.Entry<String, String> entry : customers.entrySet()) {
             if (customerDatabase.getCustomer(entry.getKey()) == null) {

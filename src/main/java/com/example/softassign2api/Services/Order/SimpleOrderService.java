@@ -5,6 +5,7 @@ import com.example.softassign2api.Database.CategoryDB.InMemoryCategory;
 import com.example.softassign2api.Database.CustomerDB.ICustomerDatabase;
 import com.example.softassign2api.Database.CustomerDB.InMemoryCustomer;
 import com.example.softassign2api.Database.NotificationDB.INotificationDatabase;
+import com.example.softassign2api.Database.NotificationDB.InMemoryNotification;
 import com.example.softassign2api.Database.OrderDB.IOrderDatabase;
 import com.example.softassign2api.Database.ShoppingCartDB.ICartDatabase;
 import com.example.softassign2api.Models.Inventory.Product;
@@ -81,7 +82,7 @@ public class SimpleOrderService extends OrderService {
             return "Error: Order ID: " + id + " does not exist";
         }
         if (order.getStatus() == OrderStatus.placed) {
-            OrderActionContext context = new OrderActionContext(new CancelSimplePlaced(new InMemoryCustomer(), new InMemoryCategory()));
+            OrderActionContext context = new OrderActionContext(new CancelSimplePlaced(new InMemoryCustomer(), new InMemoryCategory(), new InMemoryNotification()));
             return context.executeAction(orderDatabase.getOrder(id));
         } else if (order.getStatus() == OrderStatus.shipped) {
             OrderActionContext context = new OrderActionContext(new CancelSimpleShipped(new InMemoryCustomer()));

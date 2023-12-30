@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Component
 public class InMemoryNotification implements INotificationDatabase {
@@ -13,7 +15,7 @@ public class InMemoryNotification implements INotificationDatabase {
     private static Map<String, Integer> notificationStatistics;
     private static Map<NotificationTemplate, Integer> notificationTemplateStastics;
 
-    public InMemoryNotification() {
+    static {
         notificationsQueue = new java.util.LinkedList<>();
         notificationsQueue.add("Welcome to the notification queue!");
         notificationStatistics = new java.util.HashMap<>();
@@ -25,6 +27,7 @@ public class InMemoryNotification implements INotificationDatabase {
         notificationsQueue.add(notification);
         updateNotificationStatistics(recipient.getUserName());
         updateNotificationTemplateStatistics(notificationTemplate);
+        new NotificationPopDelay(60000);
     }
 
     private void updateNotificationStatistics(String recipient) {
@@ -81,4 +84,18 @@ public class InMemoryNotification implements INotificationDatabase {
         return mostNotifiedCustomer;
     }
 
+    public static Queue<String> getNotificationsQueue() {
+        return notificationsQueue;
+    }
+}
+
+class NotificationPopDelay extends TimerTask {
+    public NotificationPopDelay(int delay) {
+        Timer timer = new Timer();
+        timer.schedule(this, delay);
+    }
+    @Override
+    public void run() {
+        InMemoryNotification.getNotificationsQueue().poll();
+    }
 }

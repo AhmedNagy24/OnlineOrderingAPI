@@ -25,11 +25,7 @@ public class CartService {
     public String addToCart(String id, String name, String vendor, int amount) {
         Customer temp = customerDatabase.getCustomer(id);
         if (temp != null) {
-            if (temp.getLogin()) {
-                return cartDatabase.addToCart(id, name, vendor, amount);
-            } else {
-                return "Error Unauthorised action: " + id + " is not logged in";
-            }
+            return cartDatabase.addToCart(id, name, vendor, amount);
         }
         return "Error: " + id + " doesn't exist!";
     }
@@ -37,11 +33,7 @@ public class CartService {
     public String delFromCart(String id, String name, String vendor, int amount) {
         Customer temp = customerDatabase.getCustomer(id);
         if (temp != null) {
-            if (temp.getLogin()) {
-                return cartDatabase.delFromCart(id, name, vendor, amount);
-            } else {
-                return "Error Unauthorised action: " + id + " is not logged in";
-            }
+            return cartDatabase.delFromCart(id, name, vendor, amount);
         }
         return "Error: " + id + " doesn't exist!";
     }
@@ -49,15 +41,11 @@ public class CartService {
     public Object displayCart(String id) {
         Customer temp = customerDatabase.getCustomer(id);
         if (temp != null) {
-            if (temp.getLogin()) {
-                ShoppingCart cart = cartDatabase.getCart(id);
-                if (cart != null) {
-                    return serialize(cart);
-                }
-                return "Your cart is empty";
-            } else {
-                return "Error Unauthorised action: " + id + " is not logged in";
+            ShoppingCart cart = cartDatabase.getCart(id);
+            if (cart != null) {
+                return serialize(cart);
             }
+            return "Your cart is empty";
         }
         return "Error: " + id + " doesn't exist!";
     }

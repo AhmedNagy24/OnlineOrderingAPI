@@ -6,7 +6,6 @@ public class Customer {
     private String userName;
     private String password;
     private double balance;
-    private Boolean isLogin;
     private NotificationChannel notificationChannel;
 
     public NotificationChannel getNotificationChannel() {
@@ -40,21 +39,10 @@ public class Customer {
         this.userName = userName;
         this.password = password;
         this.balance = balance;
-        this.isLogin = isLogin;
         this.notificationChannel = notificationChannel;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
-
-    public Boolean getLogin() {
-        return isLogin;
-    }
-
-    public void setLogin(Boolean login) {
-        isLogin = login;
-    }
-
-
     public String getUserName() {
         return userName;
     }

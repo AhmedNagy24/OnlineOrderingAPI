@@ -27,7 +27,6 @@ public class CustomerService {
     public String SignInUser(String username, String password) {
 
         if (customerDatabase.CheckCredentials(username, password) != null) {
-            customerDatabase.CheckCredentials(username, password).setLogin(true);
             return "Login Successful";
         }
         return "Login Failed";
