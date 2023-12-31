@@ -6,7 +6,7 @@ public class CancelNotification extends NotificationTemplate {
     }
 
     @Override
-    public String createBody(String recipient) {
-        return "Your booking with id " + recipient + " has been cancelled.";
+    public String createBody(String recipient,String language) {
+        return "Your booking with id " + recipient + " has been cancelled. in "+language;
     }
 }

@@ -12,11 +12,11 @@ public class InMemoryCustomer implements ICustomerDatabase {
     private static final ArrayList<Customer> customers = new ArrayList<>();
 
     static {
-        customers.add(new Customer("admin", "user123456", 1000.0,  NotificationChannel.EMAIL, "user1@gmail.com", "1234567890"));
-        customers.add(new Customer("user1", "user8910", 1000.0,  NotificationChannel.EMAIL, "user2@gmail.com", "1234567890"));
-        customers.add(new Customer("user2", "user8910", 1000.0,  NotificationChannel.EMAIL, "user3@gmail.com", "1234567890"));
-        customers.add(new Customer("user3", "user8910", 1000.0,  NotificationChannel.EMAIL, "user4@gmail.com", "1234567890"));
-        customers.add(new Customer("user4", "user8910", 1000.0,  NotificationChannel.EMAIL, "user5@gmail.com", "1234567890"));
+        customers.add(new Customer("admin", "user123456", 1000.0,  NotificationChannel.EMAIL, "user1@gmail.com", "1234567890", "en"));
+        customers.add(new Customer("user1", "user8910", 1000.0,  NotificationChannel.SMS, "user2@gmail.com", "1234567890", "en"));
+        customers.add(new Customer("user2", "user8910", 1000.0,  NotificationChannel.SMS, "user3@gmail.com", "1234567890", "en"));
+        customers.add(new Customer("user3", "user8910", 1000.0,  NotificationChannel.BOTH, "user4@gmail.com", "1234567890", "en"));
+        customers.add(new Customer("user4", "user8910", 1000.0,  NotificationChannel.EMAIL, "user5@gmail.com", "1234567890", "en"));
     }
 
     @Override

@@ -9,6 +9,6 @@ public abstract class NotificationTemplate {
 
     protected String template;
 
-    public abstract String createBody(String recipient);
+    public abstract String createBody(String recipient,String language);
 
 }

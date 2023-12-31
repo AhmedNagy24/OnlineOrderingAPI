@@ -5,7 +5,7 @@ public class ShippedNotification extends NotificationTemplate {
         template = "Your order { has been shipped";
     }
     @Override
-    public String createBody(String recipient) {
-        return "customer" + recipient + "your order has been shipped";
+    public String createBody(String recipient,String language) {
+        return "customer" + recipient + "your order has been shipped in "+language;
     }
 }

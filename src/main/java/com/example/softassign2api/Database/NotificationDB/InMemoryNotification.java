@@ -15,7 +15,6 @@ public class InMemoryNotification implements INotificationDatabase {
 
     static {
         notificationsQueue = new java.util.LinkedList<>();
-        notificationsQueue.add("Welcome to the notification queue!");
         notificationStatistics = new java.util.HashMap<>();
         notificationTemplateStastics = new java.util.HashMap<>();
     }
@@ -24,7 +23,7 @@ public class InMemoryNotification implements INotificationDatabase {
         ArrayList<String> channels = Notification.adaptMessage(recipient);
         updateNotificationTemplateStatistics(notificationTemplate);
         for (String channel : channels) {
-            String notification = notificationTemplate.createBody(channel);
+            String notification = notificationTemplate.createBody(channel, recipient.getLanguage());
             notificationsQueue.add(notification);
             updateNotificationStatistics(channel);
         }

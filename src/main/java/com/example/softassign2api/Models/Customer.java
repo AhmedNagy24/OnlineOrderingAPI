@@ -7,6 +7,9 @@ public class Customer {
     private String password;
     private double balance;
     private NotificationChannel notificationChannel;
+    private String email;
+    private String phoneNumber;
+    private String language;
 
     public NotificationChannel getNotificationChannel() {
         return notificationChannel;
@@ -32,16 +35,16 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    private String email;
-    private String phoneNumber;
 
-    public Customer(String userName, String password, double balance,  NotificationChannel notificationChannel, String email, String phoneNumber) {
+
+    public Customer(String userName, String password, double balance, NotificationChannel notificationChannel, String email, String phoneNumber, String language) {
         this.userName = userName;
         this.password = password;
         this.balance = balance;
         this.notificationChannel = notificationChannel;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.language = language;
     }
     public String getUserName() {
         return userName;
@@ -66,4 +69,12 @@ public class Customer {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
 }

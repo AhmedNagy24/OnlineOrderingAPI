@@ -5,8 +5,8 @@ public class PlacedNotification extends NotificationTemplate {
         template = "customer {x} your order has been placed";
     }
     @Override
-    public String createBody(String recipient) {
-        return "customer" + recipient + "your order has been placed";
+    public String createBody(String recipient,String language) {
+        return "customer" + recipient + "your order has been placed in "+language;
     }
 
 
