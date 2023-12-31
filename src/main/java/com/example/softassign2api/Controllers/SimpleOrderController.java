@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/simple-order")
 public class SimpleOrderController {
     private final OrderService orderService;
 
@@ -13,22 +14,22 @@ public class SimpleOrderController {
         this.orderService = orderService;
     }
 
-    @PutMapping("/simple-order/place/{id}")
+    @PutMapping("/place/{id}")
     public String placeOrder(@PathVariable("id") int id) {
         return orderService.placeOrder(id);
     }
 
-    @PutMapping("/simple-order/cancel/{id}")
+    @PutMapping("/cancel/{id}")
     public String cancelOrder(@PathVariable("id") int id) {
         return orderService.cancelOrder(id);
     }
 
-    @PutMapping("/simple-order/ship/{id}")
+    @PutMapping("/ship/{id}")
     public String shipOrder(@PathVariable("id") int id) {
         return orderService.shipOrder(id);
     }
 
-    @PostMapping("/simple-order/add/{userName}/{address}")
+    @PostMapping("/add/{userName}/{address}")
     public String addOrder(@PathVariable("userName") String userName, @PathVariable("address") String address) {
         return ((SimpleOrderService) orderService).addOrder(userName, address);
     }

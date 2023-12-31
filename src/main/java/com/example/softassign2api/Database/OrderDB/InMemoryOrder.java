@@ -14,11 +14,6 @@ public class InMemoryOrder implements IOrderDatabase {
         return orders.add(order);
     }
 
-    @Override
-    public boolean removeOrder(int id) {
-        return orders.remove(getOrder(id));
-    }
-
     public Order getOrder(int id) {
         for (Order order : orders) {
             if (order.getId() == id) {
