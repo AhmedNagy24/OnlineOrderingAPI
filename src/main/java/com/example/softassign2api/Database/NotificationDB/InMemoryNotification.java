@@ -67,7 +67,10 @@ public class InMemoryNotification implements INotificationDatabase {
                 mostNotifiedTemplate = entry.getKey();
             }
         }
-        return mostNotifiedTemplate.getTemplate();
+        if (mostNotifiedTemplate != null) {
+            return mostNotifiedTemplate.getTemplate();
+        }
+        return null;
     }
 
     //function to return the most notified customer

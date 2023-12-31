@@ -34,7 +34,7 @@ public class SimpleOrderController {
         return ((SimpleOrderService) orderService).addOrder(userName, address);
     }
 
-    @GetMapping("/simple-order/get/{id}")
+    @GetMapping("/get/{id}")
     public Object getOrder(@PathVariable("id") int id) {
         return orderService.getOrder(id);
     }

@@ -20,17 +20,17 @@ public class InMemoryCategory implements ICategoryDatabase {
         temp.put(new Product("Shirt", "Reebok", 100), 30);
         categories.add(new Category("Clothes", temp));
         temp = new HashMap<>();
-        temp.put(new Product("Laptop", "Dell", 1000), 60);
-        temp.put(new Product("Laptop", "HP", 1000), 50);
-        temp.put(new Product("Laptop", "Lenovo", 1000), 40);
-        temp.put(new Product("Laptop", "Asus", 1000), 30);
+        temp.put(new Product("Laptop", "Dell", 500), 60);
+        temp.put(new Product("Laptop", "HP", 600), 50);
+        temp.put(new Product("Laptop", "Lenovo", 500), 40);
+        temp.put(new Product("Laptop", "Asus", 600), 30);
         categories.add(new Category("Electronics", temp));
         temp = new HashMap<>();
         temp.put(new Product("Food", "Bread", 10), 60);
         temp.put(new Product("Food", "Milk", 10), 50);
         temp.put(new Product("Food", "Eggs", 10), 40);
         temp.put(new Product("Food", "Cheese", 10), 30);
-        categories.add(new Category("Food", temp));
+        categories.add(new Category("Grocery", temp));
     }
 
     @Override
