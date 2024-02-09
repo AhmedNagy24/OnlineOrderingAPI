@@ -1,4 +1,4 @@
-# Online Ordering System API (Java & Spring Boot)
+# Online Ordering API (Java & Spring Boot)
 This project provides API endpoints for an Online Ordering System, implemented using Java and Spring Boot. It offers a robust and scalable solution for managing 
 and creating orders online.
 ## Features
